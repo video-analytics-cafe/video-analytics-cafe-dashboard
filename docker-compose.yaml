@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  db_pg:
+    container_name: db_pg
+    ports: 
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRE_USER=admin
+    image: postgres:16.2-alpine
+
+
+  streamlit:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    ports:
+      - '8501:8501'
+    volumes:
+      - './data:/usr/src/app/data:delegated'
+      - './project:/usr/src/app/project:delegated'
+    environment:
+      - USER_ID=1000
+      - GROUP_ID=1000
