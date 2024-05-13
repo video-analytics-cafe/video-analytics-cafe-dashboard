@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.6'
 services:
   db_pg:
     container_name: db_pg
@@ -6,7 +6,9 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=root
-      - POSTGRE_USER=admin
+      - POSTGRE_USER=postgres
+    expose:
+      - 8100
     image: postgres:16.2-alpine
 
 
