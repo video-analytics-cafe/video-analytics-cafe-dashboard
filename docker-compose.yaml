@@ -1,14 +1,17 @@
-version: '4.0'
+version: '2.27'
 services:
   postgres:
     image: postgres:14-alpine
-    networks:
-      - arch-network
+    # networks:
+    #   - arch-network
     container_name: postgres
     ports: 
       - 5432:5432
     expose:
       - 8100
+    # volumes:
+      # - postgres-data:/var/lib/postgresql/data
+
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
@@ -20,8 +23,8 @@ services:
     restart: always
     ports:
       - "8820:80"
-    networks:
-      - arch-network
+    # networks:
+    #   - arch-network
     environment:
       - TZ=${TZ:-Europe/Luxembourg}
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-postgres@postgres.com}
@@ -43,3 +46,5 @@ services:
     environment:
       - USER_ID=1000
       - GROUP_ID=1000
+volumes:
+  pgadmin-data:

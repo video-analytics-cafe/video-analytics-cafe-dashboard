@@ -8,6 +8,9 @@ WORKDIR /usr/src/app
 # add and install requirements
 COPY ./requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install seaborn
+RUN pip install matplotlib
+RUN pip install altair
 
 
 # Copy the current directory contents into the container at /usr/src/app
