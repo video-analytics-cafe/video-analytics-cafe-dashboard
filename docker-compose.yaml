@@ -1,17 +1,36 @@
-version: '3.6'
+version: '4.0'
 services:
-  db_pg:
-    container_name: db_pg
+  postgres:
+    image: postgres:14-alpine
+    networks:
+      - arch-network
+    container_name: postgres
     ports: 
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRE_USER=postgres
+      - 5432:5432
     expose:
       - 8100
-    image: postgres:16.2-alpine
-
-
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - TZ=${TZ:-Europe/Luxembourg}
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8820:80"
+    networks:
+      - arch-network
+    environment:
+      - TZ=${TZ:-Europe/Luxembourg}
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-postgres@postgres.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-postgres}
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    
   streamlit:
     build:
       dockerfile: ./Dockerfile
